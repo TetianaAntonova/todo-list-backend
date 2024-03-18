@@ -5,4 +5,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = "TodoList"
+rootProject.name = "todo-list-backend"
