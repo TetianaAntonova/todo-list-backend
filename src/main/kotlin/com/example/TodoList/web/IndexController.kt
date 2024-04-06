@@ -15,4 +15,6 @@ class IndexController {
         println("In index")
         return "Hello!"
     }
+
+    
 }
