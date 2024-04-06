@@ -1,9 +1,7 @@
 package com.example.TodoList.web
 
 import com.example.TodoList.domain.Task
-import com.example.TodoList.domain.usecases.AddTaskUseCase
-import com.example.TodoList.domain.usecases.GetTaskByIdUseCase
-import com.example.TodoList.domain.usecases.GetTasksUseCase
+import com.example.TodoList.domain.usecases.*
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -11,26 +9,32 @@ import org.springframework.web.bind.annotation.*
 class TaskController(
     private val addTaskUseCase: AddTaskUseCase,
     private val getTasksUseCase: GetTasksUseCase,
-    private val getTaskByIdUseCase: GetTaskByIdUseCase
+    private val getTaskByIdUseCase: GetTaskByIdUseCase,
+    private val updateTaskUseCase: UpdateTaskUseCase
 ) {
 
     companion object {
-        private const val TASK_PATH = "/api/task"
-        private const val GET_TASK_PATH = "/api/task/{id}"
+        private const val TASKS_PATH = "/api/task"
+        private const val TASK_PATH = "/api/task/{id}"
     }
 
-    @PostMapping(TASK_PATH)
+    @PostMapping(TASKS_PATH)
     fun addTask(@RequestBody request: AddTaskRequest) {
         addTaskUseCase.add(request)
     }
 
-    @GetMapping(TASK_PATH)
+    @PatchMapping(TASK_PATH)
+    fun updateDone(@PathVariable id: Long, @RequestParam done: Boolean): Task? {
+        println("IN update - $id, $done")
+        return updateTaskUseCase.updateDone(id, done)
+    }
+
+    @GetMapping(TASKS_PATH)
     fun getTasks(): List<Task> {
-        println("get tasks")
         return getTasksUseCase.get()
     }
 
-    @GetMapping(GET_TASK_PATH)
+    @GetMapping(TASK_PATH)
     fun getTasks(@PathVariable id: Long): Task? {
         println("get task: $id")
         return getTaskByIdUseCase.get(id)

@@ -10,6 +10,7 @@ interface TaskService {
     fun save(taskTitle: String, createdAt: LocalDate)
     fun getAll(): List<Task>
     fun getById(id: Long): Task?
+    fun updateDone(id: Long, done: Boolean): Task?
 }
 
 @Service
@@ -27,6 +28,13 @@ class TaskServiceImpl(
 
     override fun getById(id: Long): Task? {
         return taskRepository.findByIdOrNull(id)?.toTask()
+    }
+
+    override fun updateDone(id: Long, done: Boolean): Task? {
+        return taskRepository.findByIdOrNull(id)?.let {
+            it.done = done
+            taskRepository.save(it)
+        }?.toTask()
     }
 
     private fun TaskEntity.toTask(): Task {
