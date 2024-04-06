@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  db:
+    container_name: todo-list_postgres
+    image: postgres:16
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: todo_list
+      POSTGRES_USER: todo_list
+      POSTGRES_PASSWORD: todo_list
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  adminer:
+    container_name: todo_list_adminer
+    image: adminer
+    restart: always
+    ports:
+      - "8085:8080"
